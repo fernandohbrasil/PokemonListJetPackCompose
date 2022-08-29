@@ -18,10 +18,6 @@ import org.mockito.MockitoAnnotations
 
 class ListViewModelTest {
 
-    private companion object {
-        const val ERROR_MESSAGE = "error"
-    }
-
     @Rule
     @JvmField
     var testSchedulerRule = RxImmediateSchedulerRule()
@@ -35,8 +31,6 @@ class ListViewModelTest {
     @Mock
     private lateinit var getPokemons: GetPokemons
 
-    private lateinit var isLoadingObserver: LiveDataTestObserver<Boolean>
-    private lateinit var errorObserver: LiveDataTestObserver<String>
     private lateinit var pokemonsLiveDataObserver: LiveDataTestObserver<List<PokemonItem>>
 
     @Before
@@ -44,8 +38,6 @@ class ListViewModelTest {
         MockitoAnnotations.openMocks(this)
         sut = ListViewModel(getPokemons)
 
-        isLoadingObserver = sut.isLoading.test()
-        errorObserver = sut.error.test()
         pokemonsLiveDataObserver = sut.pokemonsLiveData.test()
     }
 
@@ -57,18 +49,6 @@ class ListViewModelTest {
         sut.loadPokemons()
 
         Mockito.verify(getPokemons).invoke()
-        isLoadingObserver.assertValues(false, true, false)
         pokemonsLiveDataObserver.assertValues(expected)
-    }
-
-    @Test
-    fun getPokemons_should_emitError_when_getPokemonsFails() {
-        whenever(getPokemons()).thenReturn(Single.error(Throwable(ERROR_MESSAGE)))
-
-        sut.loadPokemons()
-
-        Mockito.verify(getPokemons).invoke()
-        isLoadingObserver.assertValues(false, true, false)
-        errorObserver.assertValues(ERROR_MESSAGE)
     }
 }

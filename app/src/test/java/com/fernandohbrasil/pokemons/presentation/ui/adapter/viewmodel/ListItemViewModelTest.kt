@@ -7,6 +7,7 @@ import com.fernandohbrasil.pokemons.core.testutils.LiveDataTestObserver
 import com.fernandohbrasil.pokemons.domain.interactors.GetPokemonByName
 import com.fernandohbrasil.pokemons.domain.model.Pokemon
 import com.fernandohbrasil.pokemons.domain.model.PokemonItem
+import com.fernandohbrasil.pokemons.presentation.viewmodel.ListItemViewModel
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
